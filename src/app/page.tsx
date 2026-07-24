@@ -8,6 +8,7 @@ import { SegmentsExplorer } from "@/components/sections/SegmentsExplorer";
 import { Process } from "@/components/sections/Process";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { CoverageMap } from "@/components/sections/CoverageMap";
+import { CTABanner } from "@/components/sections/CTABanner";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <Process />
       <Testimonials />
       <CoverageMap />
+      <CTABanner />
     </main>
   );
 }

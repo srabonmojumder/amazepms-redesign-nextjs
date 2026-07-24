@@ -12,7 +12,7 @@ type RevealProps = {
   y?: number;
   /** Extra delay in seconds. */
   delay?: number;
-  as?: "div" | "li" | "span" | "section" | "article";
+  as?: "div" | "li" | "span" | "section" | "article" | "p";
   className?: string;
   once?: boolean;
 };
@@ -34,22 +34,23 @@ export function Reveal({
   const reduced = useReducedMotion();
   const MotionTag = motion[as];
 
-  if (reduced) {
-    const StaticTag = as;
-    return <StaticTag className={className}>{children}</StaticTag>;
-  }
-
+  // Always render the same motion element (never swap element type between
+  // server and client — that causes a hydration mismatch that can leave the
+  // content stuck at the server's opacity:0). Under reduced motion we simply
+  // disable the entrance with initial={false}, showing content immediately.
   return (
     <MotionTag
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      // Reduced motion: force the visible end-state on mount (do NOT use
+      // initial={false} — that keeps the server's opacity:0 inline style).
+      initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y }}
+      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once, margin: "0px 0px -12% 0px" }}
-      transition={{
-        duration: 0.7,
-        ease: EASE.entrance,
-        delay: delay + index * 0.07,
-      }}
+      transition={
+        reduced
+          ? { duration: 0 }
+          : { duration: 0.7, ease: EASE.entrance, delay: delay + index * 0.07 }
+      }
     >
       {children}
     </MotionTag>
