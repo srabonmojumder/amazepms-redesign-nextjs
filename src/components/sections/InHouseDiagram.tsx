@@ -70,10 +70,10 @@ export function InHouseDiagram() {
       className="relative overflow-hidden border-y border-ink-600 bg-ink-800/40 py-section"
     >
       {/* Faint blueprint ground */}
-      <div
+      {/* <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-blueprint-fine bg-grid-fine opacity-40"
-      />
+      /> */}
       <div className="container-page relative">
         <SectionHeader
           id="inhouse-heading"

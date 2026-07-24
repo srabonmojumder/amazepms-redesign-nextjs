@@ -12,10 +12,10 @@ export default function NotFound() {
       id="main"
       className="relative flex min-h-[70vh] items-center overflow-hidden bg-ink-900 pt-[var(--nav-height)]"
     >
-      <div
+      {/* <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-blueprint bg-grid opacity-30"
-      />
+      /> */}
       <div className="container-page relative">
         <p className="readout mb-6">ERR // 404 — OFF THE FLOOR PLAN</p>
         <h1 className="font-display text-6xl font-black tracking-tightest text-bone-100 sm:text-hero">

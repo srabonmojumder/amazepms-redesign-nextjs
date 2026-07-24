@@ -9,10 +9,10 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-ink-600 bg-ink-900">
       {/* Faint blueprint grid ground */}
-      <div
+      {/* <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-blueprint bg-grid opacity-30"
-      />
+      /> */}
 
       <div className="container-page relative pb-10 pt-16 sm:pt-20">
         {/* Top: brand block + link columns */}

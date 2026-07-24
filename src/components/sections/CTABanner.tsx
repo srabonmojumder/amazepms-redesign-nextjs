@@ -22,10 +22,10 @@ export function CTABanner({
       className="relative overflow-hidden border-t border-ink-600 bg-ink-900 py-section"
     >
       {/* Blueprint ground + scan line */}
-      <div
+      {/* <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-blueprint bg-grid opacity-30"
-      />
+      /> */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px animate-scan bg-gradient-to-r from-transparent via-amber/60 to-transparent"

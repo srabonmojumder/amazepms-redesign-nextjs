@@ -105,14 +105,14 @@ export function DayTimeline() {
       className="relative flex scroll-mt-24 flex-col overflow-hidden bg-ink-800/40 py-section md:h-screen md:justify-between md:py-0 motion-reduce:!h-auto motion-reduce:!py-section"
     >
       {/* Blueprint ground */}
-      <div
+      {/* <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-blueprint-fine bg-grid-fine opacity-40"
-      />
+      /> */}
 
       {/* Header */}
       <div className="container-page relative md:pt-[calc(var(--nav-height)+2.5rem)]">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-4">
           <SectionHeader
             id="day-heading"
             code="OPS // 24-HOUR CYCLE"
