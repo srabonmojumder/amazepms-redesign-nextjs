@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   animate,
   motion,
@@ -8,17 +9,38 @@ import {
   useTransform,
   type PanInfo,
 } from "framer-motion";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { testimonials } from "@/data/testimonials";
 import { usePrefersReducedMotion } from "@/hooks/useReducedMotion";
 import { clamp } from "@/lib/utils";
-import { EASE } from "@/lib/motion";
+
+/** Segment label → representative photo revealed behind the card on hover. */
+const segmentImages: Record<string, string> = {
+  "Gated Community": "/images/segments/residential.jpg",
+  "Corporate Office": "/images/segments/corporate.jpg",
+  Hospital: "/images/segments/healthcare.jpg",
+  "Mall & Retail": "/images/segments/retail.jpg",
+};
+const FALLBACK_IMAGE = "/images/segments/residential.jpg";
+
+/** Two-letter monogram for the avatar chip. */
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
 /**
  * Draggable, scrubbable testimonial slider — no carousel library. Pointer drag
  * (Framer's core drag), snap-to-card on release, prev/next controls, keyboard
- * arrows, and a live progress scrubber driven by the same motion value.
+ * arrows, and a live progress scrubber. GSAP + ScrollTrigger handles the
+ * staggered entrance; hover states are CSS so they stay smooth mid-drag.
  */
 export function Testimonials() {
+  const root = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -39,7 +61,8 @@ export function Testimonials() {
       const a = cards[0] as HTMLElement | undefined;
       const b = cards[1] as HTMLElement | undefined;
       step.current = a && b ? b.offsetLeft - a.offsetLeft : a?.offsetWidth ?? 0;
-      maxScroll.current = Math.max(0, track.scrollWidth - container.clientWidth);
+      // Track fills the container; its own overflow is exactly the scroll range.
+      maxScroll.current = Math.max(0, track.scrollWidth - track.clientWidth);
       setMaxScrollState(maxScroll.current);
       // Re-clamp current position after resize.
       const clamped = clamp(x.get(), -maxScroll.current, 0);
@@ -50,12 +73,55 @@ export function Testimonials() {
     return () => window.removeEventListener("resize", measure);
   }, [x]);
 
+  // GSAP staggered rise-in, fired by an IntersectionObserver so the reveal
+  // can never get stuck invisible (ScrollTrigger + Lenis refresh timing was
+  // flaky here). gsap.set runs in useLayoutEffect → no first-paint flash.
+  useGSAP(
+    () => {
+      const cards = gsap.utils.toArray<HTMLElement>(".testi-card");
+      if (!cards.length) return;
+      if (reduced) {
+        gsap.set(cards, { opacity: 1, y: 0 });
+        return;
+      }
+      gsap.set(cards, { opacity: 0, y: 48 });
+      const play = () =>
+        gsap.to(cards, {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.09,
+          overwrite: true,
+        });
+      const el = containerRef.current;
+      if (!el || typeof IntersectionObserver === "undefined") {
+        play();
+        return;
+      }
+      const io = new IntersectionObserver(
+        (entries, obs) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            play();
+            obs.disconnect();
+          }
+        },
+        { threshold: 0.15 },
+      );
+      io.observe(el);
+      return () => io.disconnect();
+    },
+    { scope: root, dependencies: [reduced] },
+  );
+
   const progress = useTransform(x, (v) =>
     maxScrollState > 0 ? clamp(-v / maxScrollState, 0, 1) : 0,
   );
 
   const maxIndex = () =>
-    step.current > 0 ? Math.ceil(maxScroll.current / step.current) : 0;
+    step.current > 0
+      ? Math.max(0, Math.ceil((maxScroll.current - 2) / step.current)) // -2px absorbs sub-pixel rounding
+      : 0;
 
   const goTo = (i: number) => {
     const ci = clamp(i, 0, maxIndex());
@@ -76,6 +142,7 @@ export function Testimonials() {
 
   return (
     <section
+      ref={root}
       id="voices"
       aria-labelledby="testi-heading"
       className="relative overflow-hidden bg-bone-100 py-section text-ink-900"
@@ -119,10 +186,10 @@ export function Testimonials() {
           </div>
         </div>
 
-        {/* Slider */}
+        {/* Slider — vertical padding leaves room for the hover lift + shadow */}
         <div
           ref={containerRef}
-          className="mt-12 overflow-hidden"
+          className="mt-10 overflow-hidden py-8"
           role="group"
           aria-roledescription="carousel"
           aria-label="Client testimonials"
@@ -144,43 +211,74 @@ export function Testimonials() {
             dragElastic={0.06}
             onDragEnd={handleDragEnd}
             style={{ x }}
-            className="flex cursor-grab gap-5 active:cursor-grabbing"
+            className="flex cursor-grab gap-6 active:cursor-grabbing"
           >
-            {testimonials.map((t, i) => (
-              <motion.figure
+            {testimonials.map((t) => (
+              <figure
                 key={t.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.05, ease: EASE.entrance }}
-                className="tick-corner relative flex w-[84vw] shrink-0 flex-col justify-between rounded-panel border border-slate-300 bg-bone-50 p-7 sm:w-[26rem] md:p-9"
+                className="testi-card group relative flex w-full shrink-0 flex-col overflow-hidden rounded-panel border border-slate-300 bg-bone-50 p-8 shadow-[0_1px_2px_rgba(11,13,14,0.04)] transition-[transform,box-shadow,border-color] duration-base ease-out-expo hover:-translate-y-1.5 hover:border-amber-500 hover:shadow-[0_28px_60px_-28px_rgba(11,13,14,0.4)] md:w-[calc((100%-1.5rem)/2)] md:p-10 xl:w-[calc((100%-3rem)/3)]"
                 aria-roledescription="slide"
               >
-                <blockquote className="font-display text-lg font-medium leading-snug text-ink-800 md:text-xl">
-                  <span aria-hidden className="text-amber-600">
+                {/* Segment photo fades in on hover; a charcoal scrim + duotone
+                    keeps the (now light) type legible over the image. */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-base ease-out-expo group-hover:opacity-100"
+                >
+                  <Image
+                    src={segmentImages[t.segment] ?? FALLBACK_IMAGE}
+                    alt=""
+                    fill
+                    sizes="(min-width: 640px) 27rem, 86vw"
+                    className="duotone scale-105 object-cover transition-transform duration-[900ms] ease-out-expo group-hover:scale-100"
+                  />
+                  <div className="absolute inset-0 bg-ink-900/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/35 to-ink-900/55" />
+                </div>
+
+                {/* Top row: segment tag + oversized quote glyph */}
+                <div className="relative z-10 flex items-start justify-between gap-4">
+                  <span className="inline-flex items-center gap-2 rounded-pill border border-slate-300 bg-bone-100/70 px-3 py-1 font-mono text-micro uppercase tracking-widest text-amber-700 backdrop-blur-sm transition-colors duration-base group-hover:border-amber-400/50 group-hover:bg-ink-900/40 group-hover:text-amber-300">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                    {t.segment}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="-mt-4 select-none font-display text-6xl leading-none text-amber-400 transition-all duration-base ease-out-expo group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:text-amber-300"
+                  >
                     &ldquo;
                   </span>
+                </div>
+
+                {/* Quote */}
+                <blockquote className="relative z-10 mt-5 flex-1 font-display text-lg font-medium leading-snug text-ink-800 transition-colors duration-base group-hover:text-bone-50 md:text-xl">
                   {t.quote}
                 </blockquote>
-                <figcaption className="mt-8 border-t border-slate-300 pt-5">
-                  <p className="font-display font-bold text-ink-900">{t.author}</p>
-                  <p className="mt-1 text-sm text-slate-600">
-                    {t.role} · {t.organization}
-                  </p>
-                  <p className="mt-3 font-mono text-micro uppercase tracking-widest text-amber-700">
-                    {t.segment}
-                  </p>
+
+                {/* Footer: monogram avatar + attribution */}
+                <figcaption className="relative z-10 mt-8 flex items-center gap-4 border-t border-slate-300 pt-6 transition-colors duration-base group-hover:border-bone-300/25">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-slate-400 bg-bone-100 font-display text-sm font-bold text-ink-900 transition-colors duration-base group-hover:border-amber-400 group-hover:bg-amber-400">
+                    {initials(t.author)}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-display font-bold text-ink-900 transition-colors duration-base group-hover:text-white">
+                      {t.author}
+                    </p>
+                    <p className="mt-0.5 text-sm text-slate-600 transition-colors duration-base group-hover:text-bone-300">
+                      {t.role} · {t.organization}
+                    </p>
+                  </div>
                 </figcaption>
-              </motion.figure>
+              </figure>
             ))}
           </motion.div>
         </div>
 
         {/* Scrubber */}
         <div className="mt-8 flex items-center gap-4">
-          <div className="relative h-0.5 w-full max-w-xs overflow-hidden rounded-pill bg-slate-300">
+          <div className="relative h-1 w-full max-w-xs overflow-hidden rounded-pill bg-slate-300">
             <motion.span
-              className="absolute inset-y-0 left-0 w-full origin-left rounded-pill bg-amber-700"
+              className="absolute inset-y-0 left-0 w-full origin-left rounded-pill bg-amber-500"
               style={{ scaleX: progress }}
             />
           </div>
@@ -210,7 +308,7 @@ function SliderButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="grid h-12 w-12 place-items-center rounded-full border border-slate-500 text-ink-900 transition-colors duration-micro hover:border-amber-700 hover:text-amber-700 disabled:cursor-not-allowed disabled:opacity-30"
+      className="grid h-12 w-12 place-items-center rounded-full border border-slate-500 text-ink-900 transition-colors duration-micro hover:border-amber-500 hover:bg-amber-400 hover:text-ink-900 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-slate-500 disabled:hover:bg-transparent"
     >
       <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" aria-hidden>
         <path

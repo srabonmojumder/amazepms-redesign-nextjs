@@ -53,12 +53,12 @@ export function Process() {
           {/* Track + fill */}
           <span
             aria-hidden
-            className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-ink-600 sm:left-[15px]"
+            className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-ink-600 sm:left-[7px]"
           />
           <span
             ref={fill}
             aria-hidden
-            className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-amber sm:left-[15px]"
+            className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-amber sm:left-[7px]"
           />
 
           <ol className="flex flex-col gap-12">
