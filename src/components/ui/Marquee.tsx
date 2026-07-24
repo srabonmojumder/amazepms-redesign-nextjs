@@ -1,13 +1,14 @@
 "use client";
 
 import { Children, type ReactNode } from "react";
-import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /**
  * Seamless CSS marquee. Renders the track twice and translates -50% so the
- * loop is continuous. Pauses on hover; under reduced motion it becomes a
- * static, horizontally-scrollable row (still fully accessible).
+ * loop is continuous. Pauses on hover. Rendered identically on server and
+ * client (no reduced-motion branch → no hydration mismatch); under reduced
+ * motion the global `prefers-reduced-motion` CSS rule halts the animation,
+ * leaving a static, still-legible row.
  */
 export function Marquee({
   children,
@@ -19,16 +20,7 @@ export function Marquee({
   duration?: number;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
   const items = Children.toArray(children);
-
-  if (reduced) {
-    return (
-      <div className={cn("flex gap-12 overflow-x-auto", className)}>
-        {items}
-      </div>
-    );
-  }
 
   return (
     <div

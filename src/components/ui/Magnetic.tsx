@@ -26,11 +26,11 @@ export function Magnetic({
   const springX = useSpring(x, { stiffness: 260, damping: 22, mass: 0.5 });
   const springY = useSpring(y, { stiffness: 260, damping: 22, mass: 0.5 });
 
-  if (reduced) {
-    return <div className={className}>{children}</div>;
-  }
-
+  // Always render the same motion.div (no reduced-motion element swap → no
+  // hydration mismatch). The magnet effect is gated inside the handler instead,
+  // so reduced-motion users simply get no pointer-follow movement.
   const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (reduced) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();

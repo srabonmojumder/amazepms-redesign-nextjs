@@ -149,8 +149,8 @@ export function Testimonials() {
             {testimonials.map((t, i) => (
               <motion.figure
                 key={t.id}
-                initial={reduced ? false : { opacity: 0, y: 20 }}
-                whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.05, ease: EASE.entrance }}
                 className="tick-corner relative flex w-[84vw] shrink-0 flex-col justify-between rounded-panel border border-slate-300 bg-bone-50 p-7 sm:w-[26rem] md:p-9"

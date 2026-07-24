@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { MotionConfig } from "framer-motion";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/useReducedMotion";
 
@@ -51,5 +52,9 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     };
   }, [reduced]);
 
-  return <>{children}</>;
+  // MotionConfig reducedMotion="user" makes every Framer component respect the
+  // OS setting automatically (animating only safe properties like opacity, not
+  // transforms) WITHOUT any per-component render branching on useReducedMotion —
+  // which is what previously caused a server/client hydration mismatch.
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

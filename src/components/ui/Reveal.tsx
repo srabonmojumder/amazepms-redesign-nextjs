@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { EASE } from "@/lib/motion";
 
@@ -31,26 +31,19 @@ export function Reveal({
   className,
   once = true,
 }: RevealProps) {
-  const reduced = useReducedMotion();
   const MotionTag = motion[as];
 
-  // Always render the same motion element (never swap element type between
-  // server and client — that causes a hydration mismatch that can leave the
-  // content stuck at the server's opacity:0). Under reduced motion we simply
-  // disable the entrance with initial={false}, showing content immediately.
+  // Render identically on server and client (no useReducedMotion branch → no
+  // hydration mismatch). Reduced motion is handled globally by
+  // <MotionConfig reducedMotion="user">, which animates only opacity (safe) and
+  // skips the y transform for users who ask for reduced motion.
   return (
     <MotionTag
       className={className}
-      // Reduced motion: force the visible end-state on mount (do NOT use
-      // initial={false} — that keeps the server's opacity:0 inline style).
-      initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y }}
-      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, margin: "0px 0px -12% 0px" }}
-      transition={
-        reduced
-          ? { duration: 0 }
-          : { duration: 0.7, ease: EASE.entrance, delay: delay + index * 0.07 }
-      }
+      transition={{ duration: 0.7, ease: EASE.entrance, delay: delay + index * 0.07 }}
     >
       {children}
     </MotionTag>
