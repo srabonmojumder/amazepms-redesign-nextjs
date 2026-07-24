@@ -37,4 +37,4 @@ yarn-error.log*
 next-env.d.ts
 
 # QA harness (dev only, not shipped)
-qa-temp.mjs
+*-temp.mjs
