@@ -85,8 +85,8 @@ export function Testimonials() {
           {/* Header — dark type on the warm bone "human" section */}
           <div className="max-w-3xl">
             <div className="mb-4 flex items-center gap-3">
-              <span className="h-px w-8 bg-amber-600" />
-              <span className="font-mono text-micro uppercase tracking-widest text-amber-600">
+              <span className="h-px w-8 bg-amber-700" />
+              <span className="font-mono text-micro uppercase tracking-widest text-amber-700">
                 VOICE // REPRESENTATIVE
               </span>
             </div>
@@ -167,7 +167,7 @@ export function Testimonials() {
                   <p className="mt-1 text-sm text-slate-600">
                     {t.role} · {t.organization}
                   </p>
-                  <p className="mt-3 font-mono text-micro uppercase tracking-widest text-amber-600">
+                  <p className="mt-3 font-mono text-micro uppercase tracking-widest text-amber-700">
                     {t.segment}
                   </p>
                 </figcaption>
@@ -180,7 +180,7 @@ export function Testimonials() {
         <div className="mt-8 flex items-center gap-4">
           <div className="relative h-0.5 w-full max-w-xs overflow-hidden rounded-pill bg-slate-300">
             <motion.span
-              className="absolute inset-y-0 left-0 w-full origin-left rounded-pill bg-amber-600"
+              className="absolute inset-y-0 left-0 w-full origin-left rounded-pill bg-amber-700"
               style={{ scaleX: progress }}
             />
           </div>
@@ -210,7 +210,7 @@ function SliderButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="grid h-12 w-12 place-items-center rounded-full border border-slate-400 text-ink-900 transition-colors duration-micro hover:border-amber-600 hover:text-amber-600 disabled:cursor-not-allowed disabled:opacity-30"
+      className="grid h-12 w-12 place-items-center rounded-full border border-slate-500 text-ink-900 transition-colors duration-micro hover:border-amber-700 hover:text-amber-700 disabled:cursor-not-allowed disabled:opacity-30"
     >
       <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" aria-hidden>
         <path

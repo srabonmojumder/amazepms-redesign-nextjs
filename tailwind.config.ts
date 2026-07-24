@@ -36,9 +36,9 @@ const config: Config = {
       },
 
       slate: {
-        DEFAULT: "#5A6B75", // secondary / muted text
-        400: "#7C8A93",
-        500: "#5A6B75",
+        DEFAULT: "#5A6B75", // brand cool slate (decorative / large text)
+        400: "#7C8A93", // AA on ink (5.5:1)
+        500: "#6E7F89", // AA on ink (4.7:1) — nudged up from #5A6B75 for small text
         600: "#44515A",
         700: "#333D44",
       },
@@ -50,6 +50,7 @@ const config: Config = {
         400: "#FFB020",
         500: "#F5A200",
         600: "#D98A00",
+        700: "#8A5800", // dark amber for AA text on light (bone) sections
         glow: "rgba(255, 176, 32, 0.16)",
       },
 

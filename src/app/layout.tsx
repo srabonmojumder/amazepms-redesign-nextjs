@@ -3,6 +3,7 @@ import { satoshi, inter, jetbrainsMono } from "./fonts";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
+import { JsonLd } from "@/components/JsonLd";
 import { site } from "@/data/site";
 import "@/styles/globals.css";
 
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
+  alternates: { canonical: "/" },
   keywords: [
     "integrated facility management",
     "facility management India",
@@ -61,6 +63,7 @@ export default function RootLayout({
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-modal focus:rounded-card focus:bg-amber focus:px-4 focus:py-2 focus:font-mono focus:text-micro focus:uppercase focus:tracking-widest focus:text-ink-900">
           Skip to content
         </a>
+        <JsonLd />
         <SmoothScrollProvider>
           <Nav />
           {children}
