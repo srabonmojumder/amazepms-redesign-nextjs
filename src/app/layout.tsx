@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { satoshi, inter, jetbrainsMono } from "./fonts";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
+import { Nav } from "@/components/layout/Nav";
+import { Footer } from "@/components/layout/Footer";
 import { site } from "@/data/site";
 import "@/styles/globals.css";
 
@@ -59,7 +61,11 @@ export default function RootLayout({
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-modal focus:rounded-card focus:bg-amber focus:px-4 focus:py-2 focus:font-mono focus:text-micro focus:uppercase focus:tracking-widest focus:text-ink-900">
           Skip to content
         </a>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <SmoothScrollProvider>
+          <Nav />
+          {children}
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
