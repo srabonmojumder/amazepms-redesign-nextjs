@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* BASE                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    --ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-transform: cubic-bezier(0.65, 0, 0.35, 1);
+    --nav-height: 4.5rem;
+  }
+
+  * {
+    @apply border-ink-600;
+  }
+
+  html {
+    /* Lenis drives scrolling; keep native smooth off to avoid conflict */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-ink-900 font-body text-base text-bone-300 antialiased;
+    font-feature-settings: "ss01", "cv01", "cv11";
+  }
+
+  /* Lenis smooth-scroll integration */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold text-bone-200;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: #ffb020;
+    color: #0b0d0e;
+  }
+
+  /* Visible, on-brand focus ring — never removed, only styled */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #0b0d0e, 0 0 0 4px #ffb020;
+    border-radius: 2px;
+  }
+
+  /* Thin control-room scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0b0d0e;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #20262a;
+    border-radius: 62.5rem;
+    border: 2px solid #0b0d0e;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2a3237;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* COMPONENT UTILITIES                                                 */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-content px-gutter;
+  }
+
+  /* Monospace live-ops micro-label */
+  .readout {
+    @apply font-mono text-micro uppercase tracking-widest text-slate-400;
+  }
+
+  /* Blueprint corner tick — used on key cards/panels */
+  .tick-corner::before,
+  .tick-corner::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: rgba(255, 176, 32, 0.5);
+    border-style: solid;
+    border-width: 0;
+  }
+  .tick-corner::before {
+    top: 0;
+    left: 0;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+  .tick-corner::after {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+
+  /* Grain overlay for duotone imagery */
+  .grain-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("/textures/grain.svg");
+    background-size: 180px;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* Duotone photographic treatment — charcoal shadows, amber highlights */
+  .duotone {
+    filter: grayscale(1) contrast(1.05) brightness(0.85);
+  }
+  .duotone-tint {
+    background: linear-gradient(180deg, rgba(255, 176, 32, 0.14), rgba(11, 13, 14, 0.65));
+    mix-blend-mode: color;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* REDUCED MOTION — a real path, not just disabled transitions         */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
