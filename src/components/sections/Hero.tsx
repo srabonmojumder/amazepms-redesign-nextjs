@@ -35,7 +35,13 @@ export function Hero() {
 
   useGSAP(
     () => {
-      if (reduced) return;
+      // Reduced motion (or first render before the media query resolves):
+      // force the finished state so nothing is left hidden by a prior pass.
+      if (reduced) {
+        gsap.set("[data-word]", { yPercent: 0 });
+        gsap.set("[data-hero-eyebrow], [data-hero-fade]", { autoAlpha: 1, y: 0 });
+        return;
+      }
 
       const words = gsap.utils.toArray<HTMLElement>("[data-word]");
       gsap.set(words, { yPercent: 115 });
