@@ -63,9 +63,17 @@ export function Footer() {
             ))}
           </FooterColumn>
         </div>
-
+        {/* Oversized wordmark — contained in a tight cropped band, not a void */}
+        <div
+          aria-hidden
+          className="pointer-events-none relative flex h-[clamp(3rem,9vw,7.5rem)] items-start justify-center overflow-hidden"
+        >
+          <span className="-translate-y-[0.1em] whitespace-nowrap font-display text-[clamp(5rem,17vw,13rem)] font-black leading-none tracking-tightest text-ink-800">
+            AMAZE
+          </span>
+        </div>
         {/* Bottom bar */}
-        <div className="mt-14 flex flex-col gap-4 border-t border-ink-600 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className=" flex flex-col gap-4 border-t border-ink-600 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p suppressHydrationWarning className="font-mono text-micro uppercase leading-[1.6] tracking-widest text-slate-500">
             © {new Date().getFullYear()} {site.legalName}
           </p>
@@ -92,15 +100,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Oversized wordmark — contained in a tight cropped band, not a void */}
-      <div
-        aria-hidden
-        className="pointer-events-none relative flex h-[clamp(3rem,9vw,7.5rem)] items-start justify-center overflow-hidden"
-      >
-        <span className="-translate-y-[0.1em] whitespace-nowrap font-display text-[clamp(5rem,17vw,13rem)] font-black leading-none tracking-tightest text-ink-800">
-          AMAZE
-        </span>
-      </div>
+
     </footer>
   );
 }
