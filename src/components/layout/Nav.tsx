@@ -148,6 +148,24 @@ export function Nav() {
           >
             <div className="container-page flex h-[var(--nav-height)] items-center justify-between">
               <Wordmark />
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+                className="relative grid h-11 w-11 place-items-center rounded-card border border-ink-600 bg-ink-800/80 text-bone-200 transition-colors hover:border-amber/40 hover:text-amber"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 stroke-current"
+                  fill="none"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
             </div>
             <nav
               aria-label="Mobile"
