@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/useReducedMotion";
 import { formatNumber } from "@/lib/utils";
 
 /**
@@ -20,7 +21,7 @@ export function CountUp({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {

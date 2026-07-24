@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
  * Magnetic hover wrapper. The child eases toward the pointer within the
@@ -18,7 +19,7 @@ export function Magnetic({
   strength?: number;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);

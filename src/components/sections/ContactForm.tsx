@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { segments } from "@/data/segments";
 import { EASE } from "@/lib/motion";
@@ -45,9 +45,8 @@ export function ContactForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
   const [touched, setTouched] = useState<Partial<Record<keyof Fields, boolean>>>({});
   const [status, setStatus] = useState<Status>("idle");
-  const [ref] = useState(
-    () => `REQ-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
-  );
+  const reactId = useId();
+  const ref = `REQ-${reactId.replace(/:/g, "").slice(0, 4).toUpperCase()}`;
 
   const update = (key: keyof Fields, value: string) => {
     setFields((f) => ({ ...f, [key]: value }));

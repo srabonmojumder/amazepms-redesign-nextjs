@@ -3,8 +3,6 @@ import { Wordmark } from "@/components/ui/Wordmark";
 import { site, navLinks } from "@/data/site";
 import { services } from "@/data/services";
 
-const year = new Date().getFullYear();
-
 export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-ink-600 bg-ink-900">
@@ -68,8 +66,8 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col gap-4 border-t border-ink-600 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono text-micro uppercase leading-[1.6] tracking-widest text-slate-500">
-            © {year} {site.legalName}
+          <p suppressHydrationWarning className="font-mono text-micro uppercase leading-[1.6] tracking-widest text-slate-500">
+            © {new Date().getFullYear()} {site.legalName}
           </p>
           <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5">
             <p className="font-mono text-micro uppercase leading-[1.6] tracking-widest text-slate-500">
