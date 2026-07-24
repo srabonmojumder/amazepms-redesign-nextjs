@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { dayPanels } from "@/data/dayTimeline";
@@ -111,7 +112,7 @@ export function DayTimeline() {
       /> */}
 
       {/* Header */}
-      <div className="container-page relative md:pt-[calc(var(--nav-height)+2.5rem)]">
+      <div className="container-page relative md:pt-[calc(var(--nav-height)+1.5rem)]">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-4">
           <SectionHeader
             id="day-heading"
@@ -133,7 +134,7 @@ export function DayTimeline() {
       {/* Track */}
       <div
         ref={trackRef}
-        className="relative z-10 mt-10 flex flex-col gap-6 px-gutter md:mt-0 md:h-[58vh] md:flex-row md:items-center md:gap-8 md:px-0 md:pl-gutter motion-reduce:!mt-10 motion-reduce:!h-auto motion-reduce:!flex-col motion-reduce:!px-gutter motion-reduce:!pl-gutter"
+        className="relative z-10 mt-10 flex flex-col gap-6 px-gutter md:mt-0 md:h-[62vh] md:shrink-0 md:flex-row md:items-center md:gap-8 md:px-0 md:pl-gutter motion-reduce:!mt-10 motion-reduce:!h-auto motion-reduce:!flex-col motion-reduce:!px-gutter motion-reduce:!pl-gutter"
       >
         {dayPanels.map((panel, i) => (
           <Panel key={panel.time} panel={panel} index={i} total={dayPanels.length} />
@@ -143,7 +144,7 @@ export function DayTimeline() {
       </div>
 
       {/* 24-hour ruler */}
-      <div className="container-page relative mt-12 md:mb-10 md:mt-0">
+      <div className="container-page relative mt-12 md:mb-6 md:mt-0">
         <div className="relative h-12">
           <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-ink-500" />
           {/* Hour ticks */}
@@ -195,56 +196,82 @@ function Panel({
   return (
     <article
       data-panel
-      className="tick-corner relative flex w-full shrink-0 flex-col justify-between overflow-hidden rounded-panel border border-ink-600 bg-ink-800 p-7 md:h-full md:w-[62vw] md:p-10 lg:w-[46vw]"
+      className="tick-corner relative flex w-full shrink-0 flex-col overflow-hidden rounded-panel border border-ink-600 bg-ink-800 md:h-full md:w-[62vw] md:flex-row lg:w-[46vw]"
     >
-      {/* Ghosted hour numeral */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -right-4 -top-8 select-none font-display text-[9rem] font-black leading-none text-ink-700/60 md:text-[13rem]"
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      <div className="relative flex items-start justify-between">
-        <div data-reveal>
-          <p className="readout text-amber">{panel.phase}</p>
-          <p className="mt-2 font-display text-5xl font-black tracking-tight text-bone-100 md:text-6xl">
-            {panel.time}
-          </p>
-        </div>
+      {/* Text content — left side */}
+      <div className="relative flex flex-1 flex-col justify-between p-7 md:p-9">
+        {/* Ghosted hour numeral */}
         <span
-          data-reveal
-          className="rounded-pill border border-ink-500 px-3 py-1 font-mono text-micro uppercase tracking-widest text-slate-400"
+          aria-hidden
+          className="pointer-events-none absolute -right-4 -top-8 select-none font-display text-[9rem] font-black leading-none text-ink-700/60 md:text-[13rem]"
         >
-          {panel.serviceCode}
+          {String(index + 1).padStart(2, "0")}
         </span>
-      </div>
 
-      <div className="relative mt-8">
-        <h3
-          data-reveal
-          className="font-display text-2xl font-bold tracking-tight text-bone-100 md:text-3xl"
-        >
-          {panel.title}
-        </h3>
-        <p data-reveal className="mt-4 max-w-md text-base text-bone-300">
-          {panel.description}
-        </p>
+        <div className="relative flex items-start justify-between">
+          <div data-reveal>
+            <p className="readout text-amber">{panel.phase}</p>
+            <p className="mt-1.5 font-display text-4xl font-black tracking-tight text-bone-100 md:text-5xl">
+              {panel.time}
+            </p>
+          </div>
+          <span
+            data-reveal
+            className="rounded-pill border border-ink-500 px-3 py-1 font-mono text-micro uppercase tracking-widest text-slate-400"
+          >
+            {panel.serviceCode}
+          </span>
+        </div>
 
-        <div data-reveal className="mt-7 flex flex-wrap gap-x-6 gap-y-2 border-t border-ink-600 pt-5">
-          {panel.readouts.map((r) => (
-            <span
-              key={r.label}
-              className="flex items-center gap-2 font-mono text-micro uppercase tracking-widest text-slate-400"
-            >
-              <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-amber" />
-              {r.label}
-              <span className="text-ink-500">/</span>
-              <span className="text-bone-200">{r.value}</span>
-            </span>
-          ))}
+        <div className="relative mt-6">
+          <h3
+            data-reveal
+            className="font-display text-2xl font-bold tracking-tight text-bone-100 md:text-3xl"
+          >
+            {panel.title}
+          </h3>
+          <p data-reveal className="mt-3 max-w-md text-base text-bone-300">
+            {panel.description}
+          </p>
+
+          <div data-reveal className="mt-5 flex flex-wrap gap-x-6 gap-y-2 border-t border-ink-600 pt-4">
+            {panel.readouts.map((r) => (
+              <span
+                key={r.label}
+                className="flex items-center gap-2 font-mono text-micro uppercase tracking-widest text-slate-400"
+              >
+                <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-amber" />
+                {r.label}
+                <span className="text-ink-500">/</span>
+                <span className="text-bone-200">{r.value}</span>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Image — right side */}
+      {panel.image && (
+        <div data-reveal className="relative hidden w-[42%] shrink-0 md:block">
+          {/* Gradient overlay left-to-right for seamless blending */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-ink-800 via-ink-800/60 to-transparent"
+          />
+          {/* Subtle amber glow top-left corner */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -left-8 top-1/4 z-10 h-32 w-32 rounded-full bg-amber/5 blur-3xl"
+          />
+          <Image
+            src={panel.image.src}
+            alt={panel.image.alt}
+            width={panel.image.width}
+            height={panel.image.height}
+            className="h-full w-full object-cover opacity-60 mix-blend-luminosity transition-opacity duration-500 hover:opacity-80 hover:mix-blend-normal"
+          />
+        </div>
+      )}
 
       <span className="sr-only">
         Panel {index + 1} of {total}
@@ -252,3 +279,4 @@ function Panel({
     </article>
   );
 }
+

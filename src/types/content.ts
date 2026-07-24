@@ -84,6 +84,8 @@ export interface DayPanel {
   /** Live-ops readouts specific to this hour. */
   readouts: { label: string; value: string }[];
   serviceCode: string;
+  /** Optional scene image for the panel card. */
+  image?: ImageAsset;
 }
 
 export interface CoverageCity {

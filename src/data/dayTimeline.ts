@@ -17,6 +17,12 @@ export const dayPanels: DayPanel[] = [
       { label: "Zones", value: "12 / 12" },
     ],
     serviceCode: "SVC-01",
+    image: {
+      src: "/images/services/housekeeping.jpg",
+      alt: "Housekeeping crew preparing common areas at dawn",
+      width: 800,
+      height: 600,
+    },
   },
   {
     time: "07:30",
@@ -30,6 +36,12 @@ export const dayPanels: DayPanel[] = [
       { label: "DG standby", value: "READY" },
     ],
     serviceCode: "SVC-02",
+    image: {
+      src: "/images/services/mep.jpg",
+      alt: "Technician inspecting MEP systems during morning rounds",
+      width: 800,
+      height: 600,
+    },
   },
   {
     time: "10:00",
@@ -43,6 +55,12 @@ export const dayPanels: DayPanel[] = [
       { label: "Patrol", value: "ON SCHED" },
     ],
     serviceCode: "SVC-03",
+    image: {
+      src: "/images/services/security.jpg",
+      alt: "Security personnel monitoring access control during peak hours",
+      width: 800,
+      height: 600,
+    },
   },
   {
     time: "14:00",
@@ -56,6 +74,12 @@ export const dayPanels: DayPanel[] = [
       { label: "Water reuse", value: "ON" },
     ],
     serviceCode: "SVC-06",
+    image: {
+      src: "/images/services/landscaping.jpg",
+      alt: "Landscaping and grounds maintenance in progress",
+      width: 800,
+      height: 600,
+    },
   },
   {
     time: "18:30",
@@ -69,6 +93,12 @@ export const dayPanels: DayPanel[] = [
       { label: "Logs", value: "SIGNED" },
     ],
     serviceCode: "OPS-00",
+    image: {
+      src: "/images/services/office-support.jpg",
+      alt: "Shift handover with logs and documentation being signed",
+      width: 800,
+      height: 600,
+    },
   },
   {
     time: "23:00",
@@ -82,5 +112,12 @@ export const dayPanels: DayPanel[] = [
       { label: "Uptime", value: "99.4%" },
     ],
     serviceCode: "SVC-03",
+    image: {
+      src: "/images/services/security.jpg",
+      alt: "Night security patrol monitoring the property",
+      width: 800,
+      height: 600,
+    },
   },
 ];
+
