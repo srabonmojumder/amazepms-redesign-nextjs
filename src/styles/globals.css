@@ -21,6 +21,12 @@
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+    /* Contain intentional bleed elements without breaking sticky/Lenis */
+    overflow-x: clip;
+  }
+
+  body {
+    overflow-x: clip;
   }
 
   body {
