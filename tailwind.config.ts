@@ -112,7 +112,7 @@ const config: Config = {
     // ------------------------------------------------------------------
     extend: {
       spacing: {
-        section: "clamp(5rem, 3rem + 8vw, 10rem)", // vertical rhythm between sections
+        section: "clamp(3.5rem, 2rem + 5vw, 6.5rem)", // vertical rhythm between sections
         gutter: "clamp(1.25rem, 0.5rem + 3vw, 4rem)", // page horizontal padding
       },
       maxWidth: {
