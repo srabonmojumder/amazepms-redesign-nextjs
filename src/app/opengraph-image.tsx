@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+export const dynamic = "force-static";
 export const alt = "Amaze PMS — Integrated Facility Management, delivered in-house";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
